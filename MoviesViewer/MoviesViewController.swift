@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -67,9 +68,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         let movie = movies![indexPath.row]
         let title = movie["title"] as! String
+        let baseUrl = "http://image.tmdb.org/t/p/w500"
+        let posterPath = movie["poster_path"] as! String
+        let imageUrl = NSURL(string: baseUrl + posterPath)
         
         cell.titleLabel.text = title
         cell.overviewLabel.text = movie["overview"] as! String
+        cell.posterView.setImageWithURL(imageUrl!)
+        
         
         return cell
     }
