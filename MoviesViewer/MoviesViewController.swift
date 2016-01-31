@@ -15,17 +15,34 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     var movies: [NSDictionary]?
     
+    @IBOutlet weak var networkErrorImageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        networkErrorImageView.hidden = true
+        
         // Do any additional setup after loading the view.
         tableView.dataSource = self
         tableView.delegate = self
+        
         loadDataFromNetwork()
+        
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
+        
+        /*
+        let netErr = UIImage(contentsOfFile: "networkerror")
+        let networkErrorImageView = UIImageView(image: netErr)
+        tableView.addSubview(networkErrorImageView)
+        
+        networkErrorImageView.frame.size.height = 50
+        networkErrorImageView.frame.size.height = 200
+        networkErrorImageView.frame.origin.x = 0
+        networkErrorImageView.frame.origin.y = 0
+        */
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,7 +69,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let imageUrl = NSURL(string: baseUrl + posterPath)
         
         cell.titleLabel.text = title
-        cell.overviewLabel.text = movie["overview"] as! String
+        cell.overviewLabel.text = movie["overview"] as? String
         cell.posterView.setImageWithURL(imageUrl!)
         
         
@@ -67,6 +84,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Pass the selected object to the new view controller.
     }
     */
+    
+    @IBAction func networkErrorOnTap(sender: AnyObject) {
+        self.networkErrorImageView.hidden = true
+        loadDataFromNetwork()
+    }
     
     func loadDataFromNetwork() {
         
@@ -86,23 +108,28 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             delegateQueue:NSOperationQueue.mainQueue()
         )
         
-        // Display HUD right before the request is made
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(myRequest,
             completionHandler: { (data, response, error) in
                 if let data = data {
                     
-                    // Hide HUD once the network request comes back (must be done on main UI thread)
+                    self.networkErrorImageView.hidden = true
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     
                     // ... Remainder of response handling code ...
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         data, options:[]) as? NSDictionary {
+                            
                             print("response: \(responseDictionary)")
-                            self.movies = responseDictionary["results"] as! [NSDictionary]
+                            
+                            self.movies = responseDictionary["results"] as? [NSDictionary]
                             self.tableView.reloadData()
                     }
+                }
+                else{
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    self.networkErrorImageView.hidden = false
                 }
                 
         });
