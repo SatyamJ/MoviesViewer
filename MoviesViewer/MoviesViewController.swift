@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -20,7 +21,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Do any additional setup after loading the view.
         tableView.dataSource = self
         tableView.delegate = self
-        
+        loadDataFromNetwork()
+        /*
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
         let request = NSURLRequest(
@@ -46,6 +48,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 }
         })
         task.resume()
+        */
     
     }
 
@@ -88,5 +91,46 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func loadDataFromNetwork() {
+        
+        // ... Create the NSURLRequest (myRequest) ...
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        
+        let myRequest = NSURLRequest(
+            URL: url!,
+            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,
+            timeoutInterval: 10)
+        
+        // Configure session so that completion handler is executed on main UI thread
+        let session = NSURLSession(
+            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+            delegate:nil,
+            delegateQueue:NSOperationQueue.mainQueue()
+        )
+        
+        // Display HUD right before the request is made
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        let task : NSURLSessionDataTask = session.dataTaskWithRequest(myRequest,
+            completionHandler: { (data, response, error) in
+                if let data = data {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
+                        data, options:[]) as? NSDictionary {
+                            print("response: \(responseDictionary)")
+                            self.movies = responseDictionary["results"] as! [NSDictionary]
+                            self.tableView.reloadData()
+                    }
+                }
+                // Hide HUD once the network request comes back (must be done on main UI thread)
+                //MBProgressHUD.hideHUDForView(self.view, animated: true)
+                
+                // ... Remainder of response handling code ...
+                
+        });
+        task.resume()
+    }
 
 }
