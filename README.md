@@ -2,38 +2,49 @@
 
 MoviesViewer is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: 6 hours spent in total
+Time spent: 12 hours spent in total
 
 ## User Stories
 
 The following **required** functionality is complete:
 
-- [ ] User can view a list of movies currently playing in theaters from The Movie Database.
-- [ ] Poster images are loaded using the UIImageView category in the AFNetworking library.
+- [x] User can view a list of movies currently playing in theaters from The Movie Database.
+- [x] Poster images are loaded using the UIImageView category in the AFNetworking library.
+- [x] User sees a loading state while waiting for the movies API.
+- [x] User can pull to refresh the movie list.
 
+The following **optional** features are implemented:
 
+- [x] User sees an error message when there's a networking error.
+- [ ] Movies are displayed using a CollectionView instead of a TableView.
+- [x] User can search for a movie.
+- [x] All images fade in as they are loading.
+- [ ] Customize the UI.
 
+The following **additional** features are implemented:
+
+- [ ] List anything else that you can get done to improve the app functionality!
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. Different ways to post a network request and to fetch data in quicker way
-2. Integration of  Cocoa with Swift and Xcode. 
+1. ways to move to a new controller with movie details when a cell is tapped
+2. toggle between list and collection view
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
-[Click to view](http://i.imgur.com/FpdQatP)
-<img src='http://i.imgur.com/FpdQatP' title='Video Walkthrough' width='100' alt='Video Walkthrough' />
-![alt tag](http://imgur.com/FpdQatP/to/img.png)
+
+<img src='http://i.imgur.com/FpdQatP.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Understanding the network request and cocoa librabaries
+Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright 2016 Satyam Jaiswal
+    Copyright [2016] [Satyam Jaiswal]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
