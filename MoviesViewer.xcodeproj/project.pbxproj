@@ -13,6 +13,7 @@
 		4A5903D91C55F7B900CCEE0B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A5903D71C55F7B900CCEE0B /* LaunchScreen.storyboard */; };
 		4A5903E11C55F8F000CCEE0B /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5903E01C55F8F000CCEE0B /* MoviesViewController.swift */; };
 		4A5903E61C56118F00CCEE0B /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5903E51C56118F00CCEE0B /* MovieCell.swift */; };
+		4A658BA41C5F2CAE00934BEB /* DetailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A658BA31C5F2CAE00934BEB /* DetailedViewController.swift */; };
 		84A35D7CF9FBB384FB62892A /* Pods_MoviesViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F058EA8E367CF3FF6ED63D6C /* Pods_MoviesViewer.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		4A5903DA1C55F7B900CCEE0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A5903E01C55F8F000CCEE0B /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesViewController.swift; sourceTree = "<group>"; };
 		4A5903E51C56118F00CCEE0B /* MovieCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		4A658BA31C5F2CAE00934BEB /* DetailedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedViewController.swift; sourceTree = "<group>"; };
 		F058EA8E367CF3FF6ED63D6C /* Pods_MoviesViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoviesViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -86,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				4A5903E01C55F8F000CCEE0B /* MoviesViewController.swift */,
+				4A658BA31C5F2CAE00934BEB /* DetailedViewController.swift */,
 			);
 			name = "view controller";
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 			files = (
 				4A5903CF1C55F7B900CCEE0B /* AppDelegate.swift in Sources */,
 				4A5903E11C55F8F000CCEE0B /* MoviesViewController.swift in Sources */,
+				4A658BA41C5F2CAE00934BEB /* DetailedViewController.swift in Sources */,
 				4A5903E61C56118F00CCEE0B /* MovieCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
