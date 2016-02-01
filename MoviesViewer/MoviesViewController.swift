@@ -10,12 +10,15 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     var movies: [NSDictionary]?
+    var filteredData: [NSDictionary]?
     
     @IBOutlet weak var networkErrorImageView: UIImageView!
+    
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +28,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Do any additional setup after loading the view.
         tableView.dataSource = self
         tableView.delegate = self
+        searchBar.delegate = self
+        filteredData = movies
         
         loadDataFromNetwork()
         
@@ -33,16 +38,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
         
-        /*
-        let netErr = UIImage(contentsOfFile: "networkerror")
-        let networkErrorImageView = UIImageView(image: netErr)
-        tableView.addSubview(networkErrorImageView)
-        
-        networkErrorImageView.frame.size.height = 50
-        networkErrorImageView.frame.size.height = 200
-        networkErrorImageView.frame.origin.x = 0
-        networkErrorImageView.frame.origin.y = 0
-        */
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,7 +46,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        if let movies = movies{
+        if let movies = filteredData{
             return movies.count
         }
         else{
@@ -62,7 +57,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
-        let movie = movies![indexPath.row]
+        let movie = filteredData![indexPath.row]
         let title = movie["title"] as! String
         let baseUrl = "http://image.tmdb.org/t/p/w500"
         let posterPath = movie["poster_path"] as! String
@@ -124,6 +119,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                             print("response: \(responseDictionary)")
                             
                             self.movies = responseDictionary["results"] as? [NSDictionary]
+                            self.filteredData = self.movies
                             self.tableView.reloadData()
                     }
                 }
@@ -140,5 +136,40 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         loadDataFromNetwork()
         refreshControl.endRefreshing()
     }
+    
+    
+    // This method updates filteredData based on the text in the Search Box
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        // When there is no text, filteredData is the same as the original data
+        if searchText.isEmpty {
+            filteredData = movies
+        } else {
+            // The user has entered text into the search box
+            // Use the filter method to iterate over all items in the data array
+            // For each item, return true if the item should be included and false if the
+            // item should NOT be included
+            filteredData = movies!.filter({(dataItem: NSDictionary) -> Bool in
+                // If dataItem matches the searchText, return true to include it
+                if (dataItem["title"] as! String).rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil {
+                    return true
+                } else {
+                    return false
+                }
+            })
+        }
+        tableView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        self.searchBar.showsCancelButton = true
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        loadDataFromNetwork()
+    }
+
 
 }
