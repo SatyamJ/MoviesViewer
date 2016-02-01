@@ -15,18 +15,29 @@ class DetailedViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var overviewLabel: UILabel!
+    
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
+    @IBOutlet weak var detailsView: UIView!
+    
     var movie: NSDictionary?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.text = movie!["title"] as? String
         overviewLabel.text = movie!["overview"] as? String
+        overviewLabel.sizeToFit()
+        
+        scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: detailsView.frame.origin.y + detailsView.frame.height)
         
         let baseUrl = "http://image.tmdb.org/t/p/w500"
         if let posterPath = movie!["poster_path"] as? String{
             let imageUrl = NSURL(string: baseUrl + posterPath)
             posterView.setImageWithURL(imageUrl!)
         }
+        
+        
         
         // Do any additional setup after loading the view.
         /*
