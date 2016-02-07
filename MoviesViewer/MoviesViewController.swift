@@ -25,6 +25,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationItem.title = "MoviesViewer"
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.setBackgroundImage(UIImage(named: "navigationbg"), forBarMetrics: .Default)
+            navigationBar.tintColor = UIColor(red: 1.0, green: 0.25, blue: 0.25, alpha: 0.8)
+            
+            let shadow = NSShadow()
+            shadow.shadowColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+            shadow.shadowOffset = CGSizeMake(2, 2);
+            shadow.shadowBlurRadius = 4;
+            navigationBar.titleTextAttributes = [
+                NSFontAttributeName : UIFont.boldSystemFontOfSize(22),
+                NSForegroundColorAttributeName : UIColor(red: 0.5, green: 0.15, blue: 0.15, alpha: 0.8),
+                NSShadowAttributeName : shadow
+            ]
+        }
+        
         networkErrorImageView.hidden = true
         
         // Do any additional setup after loading the view.
@@ -67,6 +83,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         cell.overviewLabel.text = movie["overview"] as? String
         
         //cell.posterView.setImageWithURL(imageUrl!)
+        
         if let posterPath = movie["poster_path"] as? String {
             let imageUrl = NSURL(string: baseUrl + posterPath)
         
