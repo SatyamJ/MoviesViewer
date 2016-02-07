@@ -56,7 +56,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
         
     }
-
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         let movie = filteredData![indexPath.row]
@@ -108,6 +108,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         detailViewController.movie = filteredData![indexPath!.row]
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        let bgView = UIView()
+        bgView.backgroundColor = UIColor.redColor()
+        cell.selectedBackgroundView = bgView
+        
+        tableView.deselectRowAtIndexPath(indexPath!, animated: true)
     }
     
     
@@ -199,7 +205,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         searchBar.showsCancelButton = false
         searchBar.text = ""
         searchBar.resignFirstResponder()
-        loadDataFromNetwork()
+        filteredData = movies
+        tableView.reloadData()
     }
 
 
